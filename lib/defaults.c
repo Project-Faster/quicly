@@ -64,7 +64,8 @@ const quicly_context_t quicly_spec_context = {NULL,                             
                                               NULL,
                                               NULL,
                                               &quicly_default_crypto_engine,
-                                              &quicly_default_init_cc};
+                                              &quicly_default_init_cc,
+                                              &quicly_default_ss};
 
 /* profile with a focus on reducing latency for the HTTP use case */
 const quicly_context_t quicly_performant_context = {NULL,                                                 /* tls */
@@ -99,7 +100,8 @@ const quicly_context_t quicly_performant_context = {NULL,                       
                                                     NULL,
                                                     NULL,
                                                     &quicly_default_crypto_engine,
-                                                    &quicly_default_init_cc};
+                                                    &quicly_default_init_cc,
+                                                    &quicly_default_ss};
 
 /**
  * The context of the default CID encryptor.  All the contexts being used here are ECB ciphers and therefore stateless - they can be

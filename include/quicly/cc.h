@@ -40,6 +40,16 @@ extern "C" {
 #define QUICLY_MIN_CWND 2
 #define QUICLY_RENO_BETA 0.7
 
+#define SEARCH20_DELV_BIN_COUNT 10
+#define SEARCH20_SENT_BIN_COUNT 25 // 10 + 15 extra bins
+#define SEARCH20_WINDOW_MULTIPLIER (3.5)
+#define SEARCH20_THRESH (0.35)
+
+#define QUICLY_HYBLA_RTT0 (25)
+#define QUICLY_HYBLA_RHO_LIM (16)
+
+// #define SEARCH_EXIT
+
 /**
  * Holds pointers to concrete congestion control implementation functions.
  */
@@ -58,6 +68,41 @@ typedef struct st_quicly_cc_t {
      * Current slow start threshold.
      */
     uint32_t ssthresh;
+    /**
+     * Slow-start specific data storage
+     */
+    union {
+        struct {
+            double rho;
+        } hybla;
+        struct {
+            uint8_t found;
+            int64_t round_start;
+            int64_t last_ack;
+            int64_t end_seq;
+            uint32_t min_round_rtt;
+            uint8_t samples;
+        } hystart;
+        struct {
+            /**
+             * Bins for the byte count sent and the byte count delivered (instantiated on init)
+             */
+            uint64_t delv_bins[SEARCH20_SENT_BIN_COUNT];
+            /**
+             * Maintains the end time of the current bin
+             */
+            int64_t bin_end;
+            /**
+             * Holds the size of each bin (based on the handshake RTT)
+             */
+            uint32_t bin_time;
+            /**
+             * Counts the number of times that the bin has been incremented, so we know when to
+             * start trying to watch for congestion
+             */
+            uint32_t bin_rounds;
+        } search;
+    } ss_state;
     /**
      * Packet number indicating end of recovery period, if in recovery.
      */
@@ -202,6 +247,10 @@ struct st_quicly_cc_type_t {
      * Switches the underlying algorithm of `cc` to that of `cc_switch`, returning a boolean if the operation was successful.
      */
     int (*cc_switch)(quicly_cc_t *cc);
+    /*
+     * Defines a variable slowstart callback
+     */
+    struct st_quicly_variable_ss *cc_slowstart;
     /**
      *
      */
