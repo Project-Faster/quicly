@@ -77,9 +77,18 @@ static void cubic_on_acked(quicly_cc_t *cc, const quicly_loss_t *loss, uint32_t 
 
     /* Slow start. */
     if (cc->cwnd < cc->ssthresh) {
-        if (cc_limited) {
-            cc->type->cc_slowstart->slowstart->ss(cc, loss, bytes, largest_acked, inflight, next_pn, now, max_udp_payload_size);
-        }
+#if 0 
+       cc->cwnd += bytes;
+       if (cc->cwnd_maximum < cc->cwnd)
+           cc->cwnd_maximum = cc->cwnd;   
+#else
+       if (cc_limited) {
+           cc->type->cc_slowstart->slowstart->ss(cc, loss, bytes, largest_acked, inflight, next_pn, now, max_udp_payload_size);
+       } else { 
+           fprintf(stderr, "cc_limited: %d \n", cc_limited);
+       }
+      
+#endif
         return;
     }
 

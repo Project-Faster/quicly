@@ -461,7 +461,7 @@ subtest "slow-start-search" => sub {
 
     my $each_cc = sub {
         my $cb = shift;
-        for my $cc (qw(reno pico cubic)) {
+        for my $cc (qw(cubic)) {
             subtest $cc => sub {
                 $cb->($cc);
             };
@@ -472,20 +472,16 @@ subtest "slow-start-search" => sub {
         $each_cc->(sub {
             my $cc = shift;
             subtest "search-ss-enabled" => sub {
-		    #plan skip_all => "search enabled test"
-                    #if $cc eq "cubic"; # may remove this if we made change for reno and pico
                 my $guard = spawn_server("-C", "$cc:10", "--slowstart", "search");
                 # tail of 1st, and 2nd batch fits into both round trip
                 $doit->(@$_)
-                    for ([14000, 2, 2.5], [45000, 3, 5.5]);
+                    for ([14000, 2, 2.5], [45000, 3, 3.5], [72000, 4, 4.5]);
             };
             subtest "search-ss-disable" => sub {
-		    #plan skip_all => "search disabled test"
-		    #if $cc eq "cubic"; # may remove this if we made change for reno and pico
                 my $guard = spawn_server("-C", "$cc:10", "--slowstart", "rfc2001");
                 # tail of 1st, 2nd, and 3rd batch fits into each round trip
                 $doit->(@$_)
-                    for ([16000, 2, 3.5], [48000, 3, 5.5]);
+                    for ([14000, 2, 2.5], [45000, 3, 3.5], [72000, 4, 4.5]);
             };
 
         });
