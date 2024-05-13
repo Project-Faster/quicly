@@ -53,7 +53,12 @@ extern quicly_ss_type_t quicly_ss_type_rfc2001, quicly_ss_type_hybla, quicly_ss_
 
 extern quicly_ss_type_t* quicly_ss_all_types[];
 
-void ss_rfc2001(quicly_cc_t *cc, const quicly_loss_t *loss, uint32_t bytes, uint64_t largest_acked, uint32_t inflight,
+/* TODO
+ * The implementation of slow start algorithm (RFC 2001  https://datatracker.ietf.org/doc/rfc2001/
+ * 
+ * LIF: did not see the implementation of this function
+ */
+void ss_quicly_slowstart(quicly_cc_t *cc, const quicly_loss_t *loss, uint32_t bytes, uint64_t largest_acked, uint32_t inflight,
                         uint64_t next_pn, int64_t now, uint32_t max_udp_payload_size);
 
 struct st_quicly_variable_ss {

@@ -461,7 +461,7 @@ subtest "slow-start-search" => sub {
 
     my $each_cc = sub {
         my $cb = shift;
-        for my $cc (qw(cubic)) {
+        for my $cc (qw(cubic reno pico)) {
             subtest $cc => sub {
                 $cb->($cc);
             };

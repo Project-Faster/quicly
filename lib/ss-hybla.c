@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2024 Viasat Inc.
- * Authors:  Amber Cronin, Jae Won Chung, Mike Foxworthy, Feng Li, Mark Claypool
+ * Authors:  Amber Cronin, Jae Won Chung, Mike Foxworthy, Vittorio Parrella, Feng Li, Mark Claypool
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -25,14 +25,27 @@
 #include <stdint.h>
 #include <math.h>
 
+/**
+ * TCP Hybla is a congestion control algorithm removing the dependences of congestion
+ * window (cwnd) growth on RTT. Thus, tcp_hybla performs well over long RTT links (e.g.
+ * GEO satillite links.
+ *
+ * Thus, we implemented the slow start part of TCP hybla for QUICLY
+ *
+ * Referece:
+ *     Carlo Caini, Rosario Firrincieli, "TCP Hybla: a TCP enhancement for heterogeneous networks",
+ *     International Journal of Satellite Communications and Networking Volume 22, Issue 5,
+ *     Pages 547 - 566. September 2004.
+ */
+
 static void recalc_rho(quicly_cc_t *cc, const quicly_loss_t *loss) {
 	// RTT in msec
 	// Linux here uses us instead of ms for their rho calculations, which gives them more accurate information about
 	// the bandwidth of the connection. Here, we only have ms level measurements from loss, and so all of our
-	// measurements are only up to that level of precision. It cleans the code up a little bit though from the kernel. 
-	// we have changed this to use doubles for more accuracy and ease of writing code. 
+	// measurements are only up to that level of precision. It cleans the code up a little bit though from the kernel.
+	// we have changed this to use doubles for more accuracy and ease of writing code.
 	double rho = (double) loss->rtt.minimum / QUICLY_HYBLA_RTT0;
-	// don't allow the ratio to be less than one for faster connections than reference. 
+	// don't allow the ratio to be less than one for faster connections than reference.
 	cc->ss_state.hybla.rho = MAX(rho, 1);
 }
 

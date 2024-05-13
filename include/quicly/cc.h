@@ -40,10 +40,10 @@ extern "C" {
 #define QUICLY_MIN_CWND 2
 #define QUICLY_RENO_BETA 0.7
 
-#define SEARCH20_DELV_BIN_COUNT 10
-#define SEARCH20_SENT_BIN_COUNT 25 // 10 + 15 extra bins
-#define SEARCH20_WINDOW_MULTIPLIER (3.5)
-#define SEARCH20_THRESH (0.35)
+#define SEARCH_DELV_BIN_COUNT 10                 //
+#define SEARCH_SENT_BIN_COUNT (25)               // 10 + 15 extra bins
+#define SEARCH_WINDOW_MULTIPLIER (3.5)
+#define SEARCH_THRESH (0.35)
 
 #define QUICLY_HYBLA_RTT0 (25)
 #define QUICLY_HYBLA_RHO_LIM (16)
@@ -87,7 +87,7 @@ typedef struct st_quicly_cc_t {
             /**
              * Bins for the byte count sent and the byte count delivered (instantiated on init)
              */
-            uint64_t delv_bins[SEARCH20_SENT_BIN_COUNT];
+            uint64_t delv_bins[SEARCH_SENT_BIN_COUNT];
             /**
              * Maintains the end time of the current bin
              */
