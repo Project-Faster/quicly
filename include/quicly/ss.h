@@ -33,15 +33,13 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 
-extern bool search_exit;
-
 #define MIN(x,y) ((x > y) ? (y) : (x))
 #define MAX(x,y) ((x < y) ? (y) : (x))
 
 /**
  * Holds pointers to concrete congestion control implementation functions.
  */
-typedef const struct st_quicly_ss_type_t quicly_ss_type_t;
+typedef struct st_quicly_ss_type_t quicly_ss_type_t;
 
 struct st_quicly_ss_type_t {
     const char* name;
@@ -49,23 +47,9 @@ struct st_quicly_ss_type_t {
                uint64_t next_pn, int64_t now, uint32_t max_udp_payload_size);
 };
 
-extern quicly_ss_type_t quicly_ss_type_rfc2001, quicly_ss_type_hybla, quicly_ss_type_hystart, quicly_ss_type_search;
+extern quicly_ss_type_t quicly_ss_type_rfc2001, quicly_ss_type_search, quicly_ss_type_none;
 
 extern quicly_ss_type_t* quicly_ss_all_types[];
-
-/* TODO
- * The implementation of slow start algorithm (RFC 2001  https://datatracker.ietf.org/doc/rfc2001/
- * 
- * LIF: did not see the implementation of this function
- */
-void ss_quicly_slowstart(quicly_cc_t *cc, const quicly_loss_t *loss, uint32_t bytes, uint64_t largest_acked, uint32_t inflight,
-                        uint64_t next_pn, int64_t now, uint32_t max_udp_payload_size);
-
-struct st_quicly_variable_ss {
-    quicly_ss_type_t* slowstart;
-};
-
-extern struct st_quicly_variable_ss active_slowstart;
 
 #ifdef __cplusplus
 }

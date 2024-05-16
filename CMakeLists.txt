@@ -62,8 +62,6 @@ SET(QUICLY_LIBRARY_FILES
     lib/retire_cid.c
     lib/sendstate.c
     lib/ss-rfc2001.c
-    lib/ss-hybla.c
-    lib/ss-hystart.c
     lib/ss-search.c
     lib/sentmap.c
     lib/streambuf.c
