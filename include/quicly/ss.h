@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2024 Viasat Inc.
- * Authors:  Amber Cronin, Jae Won Chung, Mike Foxworthy, Feng Li, Mark Claypool
+ * Authors:  Amber Cronin, Jae Won Chung, Mike Foxworthy, Vittorio Parrella, Feng Li, Mark Claypool
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -47,7 +47,7 @@ struct st_quicly_ss_type_t {
                uint64_t next_pn, int64_t now, uint32_t max_udp_payload_size);
 };
 
-extern quicly_ss_type_t quicly_ss_type_rfc2001, quicly_ss_type_search, quicly_ss_type_none;
+extern quicly_ss_type_t quicly_ss_type_rfc2001, quicly_ss_type_search, quicly_ss_type_disabled;
 
 extern quicly_ss_type_t* quicly_ss_all_types[];
 

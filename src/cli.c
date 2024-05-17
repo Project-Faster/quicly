@@ -1144,7 +1144,7 @@ static void usage(const char *cmd)
            "  -S [num-speculative-ptos] number of speculative PTOs\n"
            "  -s session-file           file to load / store the session ticket\n"
            "  --slowstart <algo>        slowstart algorithm to use; \"rfc2001\" (default),\n"
-           "                            \"hybla\", \"hystart\", \"search\"\n"
+           "                            \"disabled\", \"search\"\n"
            "  -u size                   initial size of UDP datagram payload\n"
            "  -U size                   maximum size of UDP datagram payload\n"
            "  -V                        verify peer using the default certificates\n"

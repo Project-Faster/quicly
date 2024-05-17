@@ -1,6 +1,6 @@
   /*
  * Copyright (c) 2024 Viasat Inc.
- * Authors:  Amber Cronin, Jae Won Chung, Mike Foxworthy, Feng Li, Mark Claypool
+ * Authors:  Amber Cronin, Jae Won Chung, Mike Foxworthy, Vittorio Parrella, Feng Li, Mark Claypool
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -40,10 +40,10 @@ void ss_quicly_default(quicly_cc_t *cc, const quicly_loss_t *loss, uint32_t byte
 
 quicly_ss_type_t quicly_ss_type_rfc2001= { "rfc2001", ss_quicly_default };
 
-void ss_quicly_none(quicly_cc_t *cc, const quicly_loss_t *loss, uint32_t bytes, uint64_t largest_acked, uint32_t inflight,
+void ss_quicly_disabled(quicly_cc_t *cc, const quicly_loss_t *loss, uint32_t bytes, uint64_t largest_acked, uint32_t inflight,
                     uint64_t next_pn, int64_t now, uint32_t max_udp_payload_size)
 {}
 
-quicly_ss_type_t quicly_ss_type_none = { "none", ss_quicly_none };
+quicly_ss_type_t quicly_ss_type_disabled = { "disabled", ss_quicly_disabled };
 
-quicly_ss_type_t* quicly_ss_all_types[] = { &quicly_ss_type_none, &quicly_ss_type_rfc2001, &quicly_ss_type_search, NULL };
+quicly_ss_type_t* quicly_ss_all_types[] = { &quicly_ss_type_disabled, &quicly_ss_type_rfc2001, &quicly_ss_type_search, NULL };

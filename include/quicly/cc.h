@@ -41,9 +41,9 @@ extern "C" {
 #define QUICLY_RENO_BETA 0.7
 
 #define QUICLY_SEARCH_DELV_BIN_COUNT 10                 // number of search delivered bytes bins
-#define QUICLY_SEARCH_SENT_BIN_COUNT (25)               // number of search sent bytes bins
+#define QUICLY_SEARCH_TOTAL_BIN_COUNT (25)               // number of search sent bytes bins
 #define QUICLY_SEARCH_WINDOW_MULTIPLIER (3.5)           // search multiplier for window calculation
-#define QUICLY_SEARCH_THRESH (0.35)                     // search threshold to stop slow start phase
+#define QUICLY_SEARCH_THRESH (0.35)                     // search threshold to exit slow start phase
 
 /**
  * Holds pointers to concrete congestion control implementation functions.
@@ -71,7 +71,7 @@ typedef struct st_quicly_cc_t {
             /**
              * Bins for the byte count sent and the byte count delivered (instantiated on init)
              */
-            uint64_t delv_bins[QUICLY_SEARCH_SENT_BIN_COUNT];
+            uint64_t delv_bins[QUICLY_SEARCH_TOTAL_BIN_COUNT];
             /**
              * Maintains the end time of the current bin
              */

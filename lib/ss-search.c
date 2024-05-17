@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2024 Viasat Inc.
- * Authors:  Amber Cronin, Jae Won Chung, Mike Foxworthy, Feng Li, Mark Claypool
+ * Authors:  Amber Cronin, Jae Won Chung, Mike Foxworthy, Vittorio Parrella, Feng Li, Mark Claypool
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -86,7 +86,7 @@ void ss_search(quicly_cc_t *cc, const quicly_loss_t *loss, uint32_t bytes, uint6
 	// for a very long time, but application never received a loss (and so is still in slow-start)
 	// This is likely handled by the prior binroll while loop, but that might add unnecessary latency
 	// dependant on how long ago the last packet was acknowledged.
-	if (((now - *bin_end) / *bin_time) > QUICLY_SEARCH_SENT_BIN_COUNT) {
+	if (((now - *bin_end) / *bin_time) > QUICLY_SEARCH_TOTAL_BIN_COUNT) {
 		ss_search_reset(cc, loss, bytes, now);
 	}
 	
@@ -95,7 +95,7 @@ void ss_search(quicly_cc_t *cc, const quicly_loss_t *loss, uint32_t bytes, uint6
 	while((now - *bin_time) > (*bin_end)) {
 		*bin_end += *bin_time;
 		*bin_rounds += 1;
-		delv[(*bin_rounds % (QUICLY_SEARCH_SENT_BIN_COUNT))] = 0;
+		delv[(*bin_rounds % (QUICLY_SEARCH_TOTAL_BIN_COUNT))] = 0;
 	}
 	// perform current binroll
 	if((now > (*bin_end))) {
@@ -104,13 +104,13 @@ void ss_search(quicly_cc_t *cc, const quicly_loss_t *loss, uint32_t bytes, uint6
 		// delivered bin count (because of the definition of how bin_time is calculated)
 		// thus, the number of rounds must be >= than the delv bin count + the bin shift
 		if((*bin_rounds) >= ((QUICLY_SEARCH_DELV_BIN_COUNT) + bin_shift)
-			&& bin_shift < (QUICLY_SEARCH_SENT_BIN_COUNT - QUICLY_SEARCH_DELV_BIN_COUNT)) {
+			&& bin_shift < (QUICLY_SEARCH_TOTAL_BIN_COUNT - QUICLY_SEARCH_DELV_BIN_COUNT)) {
 			// do SEARCH
 			double shift_delv_sum = 0, delv_sum = 0;
 			for (int i = *bin_rounds; i > (*bin_rounds - (QUICLY_SEARCH_DELV_BIN_COUNT)); i--) {
 				// the value of bin_shift will always be at least 1, so the current sent bin is never used
-				shift_delv_sum += delv[((i - bin_shift) % (QUICLY_SEARCH_SENT_BIN_COUNT))];
-				delv_sum += delv[(i % (QUICLY_SEARCH_SENT_BIN_COUNT))];
+				shift_delv_sum += delv[((i - bin_shift) % (QUICLY_SEARCH_TOTAL_BIN_COUNT))];
+				delv_sum += delv[(i % (QUICLY_SEARCH_TOTAL_BIN_COUNT))];
 			}
 			if (shift_delv_sum >= 1) {
 				shift_delv_sum *= 2;
@@ -127,20 +127,20 @@ void ss_search(quicly_cc_t *cc, const quicly_loss_t *loss, uint32_t bytes, uint6
 				}
 			}
 		}
-		else if(bin_shift >= (QUICLY_SEARCH_SENT_BIN_COUNT - QUICLY_SEARCH_DELV_BIN_COUNT)) {
+		else if(bin_shift >= (QUICLY_SEARCH_TOTAL_BIN_COUNT - QUICLY_SEARCH_DELV_BIN_COUNT)) {
 			/* TODO: Double bin_time and consolidate for high RTT operation */
 		}
 
 		*bin_end += *bin_time;
 		*bin_rounds += 1;
-		delv[(*bin_rounds % (QUICLY_SEARCH_SENT_BIN_COUNT))] = 0;
+		delv[(*bin_rounds % (QUICLY_SEARCH_TOTAL_BIN_COUNT))] = 0;
 	}
 
 	// fill (updated) bin with latest acknowledged bytes
 	// TCP implementation has a method of tracking total delivered bytes to avoid this per-packet
 	// computation, but we aren't doing that (yet). loss->total_bytes_sent looks interesting, but
 	// does not seem to guarantee a match with conn->egress.max_data.sent (see loss.c)
-	delv[(*bin_rounds % (QUICLY_SEARCH_SENT_BIN_COUNT))] += bytes;
+	delv[(*bin_rounds % (QUICLY_SEARCH_TOTAL_BIN_COUNT))] += bytes;
 
 	// perform standard SS doubling
 	cc->cwnd += bytes;
