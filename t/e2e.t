@@ -443,7 +443,7 @@ subtest "slow-start" => sub {
 
     my $each_cc = sub {
         my $cb = shift;
-        for my $cc (qw(reno cubic)) {
+        for my $cc (qw(reno pico cubic)) {
             subtest $cc => sub {
                 $cb->($cc);
             };
