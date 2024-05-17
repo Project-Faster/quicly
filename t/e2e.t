@@ -569,13 +569,13 @@ subtest "slow-start-search" => sub {
     subtest "search-test" => sub {
         $each_cc->(sub {
             my $cc = shift;
-            subtest "search-ss-enabled" => sub {
+            subtest "search-ss-enabled" => sub { #test with slow start algorithm Search.
                 my $guard = spawn_server("-C", "$cc:10", "--slowstart", "search");
                 # tail of 1st, and 2nd batch fits into both round trip
                 $doit->(@$_)
                     for ([14000, 2, 2.5], [45000, 3, 3.5], [72000, 4, 4.5]);
             };
-            subtest "search-ss-disable" => sub {
+            subtest "search-ss-default" => sub {  #test with the default slow start algorithm defined in RFC 2001
                 my $guard = spawn_server("-C", "$cc:10", "--slowstart", "rfc2001");
                 # tail of 1st, 2nd, and 3rd batch fits into each round trip
                 $doit->(@$_)
