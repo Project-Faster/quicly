@@ -33,9 +33,6 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 
-#define MIN(x,y) ((x > y) ? (y) : (x))
-#define MAX(x,y) ((x < y) ? (y) : (x))
-
 /**
  * Holds pointers to concrete congestion control implementation functions.
  */

@@ -50,7 +50,8 @@ void ss_search_reset(quicly_cc_t *cc, const quicly_loss_t *loss, uint32_t bytes,
 	uint32_t* bin_rounds = &cc->ss_state.search.bin_rounds;
 
 	// bin time is the size of each of the sent/delv bins
-	*bin_time = MAX((loss->rtt.latest * QUICLY_SEARCH_WINDOW_MULTIPLIER) / (QUICLY_SEARCH_DELV_BIN_COUNT), 1);
+  uint32_t tmp_bin_time = (loss->rtt.latest * QUICLY_SEARCH_WINDOW_MULTIPLIER) / (QUICLY_SEARCH_DELV_BIN_COUNT);
+  *bin_time = tmp_bin_time < 1 ? tmp_bin_time : 1;
 	*bin_end = now + *bin_time;
 	delv[0] = 0;
 	*bin_rounds = 0;

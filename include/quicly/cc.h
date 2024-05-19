@@ -40,8 +40,8 @@ extern "C" {
 #define QUICLY_MIN_CWND 2
 #define QUICLY_RENO_BETA 0.7
 
-#define QUICLY_SEARCH_DELV_BIN_COUNT 10                 // number of search delivered bytes bins
-#define QUICLY_SEARCH_TOTAL_BIN_COUNT (25)               // number of search sent bytes bins
+#define QUICLY_SEARCH_DELV_BIN_COUNT (10)               // number of search delivered bytes bins
+#define QUICLY_SEARCH_TOTAL_BIN_COUNT (25)              // number of search sent bytes bins
 #define QUICLY_SEARCH_WINDOW_MULTIPLIER (3.5)           // search multiplier for window calculation
 #define QUICLY_SEARCH_THRESH (0.35)                     // search threshold to exit slow start phase
 
