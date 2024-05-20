@@ -32,9 +32,13 @@
  * Linux TCP (as a kernel module). 
  *
  * References: 
- *  [1]  Maryam Ataei Kachooei, Jae Chung, Feng Li, Benjamin Peters, Josh Chung, and
+ *  [1] Amber Cronin, Maryam Ataei Kachooei, Jae Chung, Feng Li, Benjamin Peters, and Mark Claypool.
+ *      Improving QUIC Slow Start Behavior in Wireless Networks with SEARCH, In Proceedings of the IEEE
+ *      Local and Metropolitan Area Conference (LANMAN), Boston, MA, USA, July 2024.
+ *
+ *  [2]  Maryam Ataei Kachooei, Jae Chung, Feng Li, Benjamin Peters, Josh Chung, and
  *       Mark Claypool. Improving TCP Slow Start Performance in Wireless Networks with
- *       SEARCH, In Proceedings of the World of Wireless, Mobile and Multimedia Networks 
+ *       SEARCH, In Proceedings of the World of Wireless, Mobile and Multimedia Networks
  *       (WoWMoM), Perth, Australia June 2024.
  *
 */
